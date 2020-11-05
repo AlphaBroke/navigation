@@ -53,7 +53,7 @@ function Viewpager() {
           return { x: newX(i), display: 'block', immediate: true }
         }
       })
-    } else if (!down && velocity > 1) {
+    } else if (!down && (Math.abs(xDelta) > centerX || velocity > 1)) {
       index.current = clamp(index.current + (xDelta > 0 ? -1 : 1), 0, lastIndex)
       set((i) => {
         if (isEdge(i)) {
@@ -62,7 +62,7 @@ function Viewpager() {
           return { x: newX(i), display: 'block', immediate: false }
         }
       })
-    } else if (!down && velocity < 1) {
+    } else if (!down && (Math.abs(xDelta) <= centerX || velocity < 1)) {
       set((i) => {
         if (isEdge(i)) {
           return { display: 'none' }
