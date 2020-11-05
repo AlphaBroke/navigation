@@ -47,18 +47,18 @@ function Viewpager() {
 
     if (down) {
       set((i) => {
-        // if (isEdge(i)) return { display: 'none' }
+        if (isEdge(i)) return { display: 'none' }
         return { x: newX(i), display: 'block', immediate: true }
       })
     } else if (!down && Math.abs(xDelta) > centerX) {
       index.current = clamp(index.current + (xDelta > 0 ? -1 : 1), 0, lastIndex)
       set((i) => {
-        // if (isEdge(i)) return { display: 'none' }
+        if (isEdge(i)) return { display: 'none' }
         return { x: newX(i), display: 'block', immediate: false }
       })
     } else if (!down && Math.abs(xDelta) <= centerX) {
       set((i) => {
-        // if (isEdge(i)) return { display: 'none' }
+        if (isEdge(i)) return { display: 'none' }
         return { x: newX(i), display: 'block', immediate: false }
       })
     }
