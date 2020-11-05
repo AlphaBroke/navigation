@@ -3,7 +3,6 @@ import React, { useRef } from 'react'
 import clamp from 'lodash-es/clamp'
 import { useSprings, animated } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
-import './styles.css'
 import NavElement from './NavElement'
 
 const navElements = [
@@ -78,6 +77,9 @@ function Viewpager() {
       {...bind()}
       key={i}
       style={{
+        position: 'absolute',
+        width: '100vw',
+        height: '100vh',
         display,
         transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
       }}>
