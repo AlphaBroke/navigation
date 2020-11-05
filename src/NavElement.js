@@ -1,12 +1,18 @@
 import React from 'react'
+import { animated } from 'react-spring'
 import './App.css'
 
-const NavElement = ({ ind, color, sc }) => {
+const NavElement = ({ ind, color, scale }) => {
   return (
     <div className="nav-element">
-      <div className="nav-element-content" style={{ backgroundColor: color }}>
+      <animated.div
+        className="nav-element-content"
+        style={{
+          backgroundColor: color,
+          transform: scale.interpolate((s) => `scale(${s})`)
+        }}>
         {ind}
-      </div>
+      </animated.div>
     </div>
   )
 }

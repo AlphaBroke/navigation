@@ -50,7 +50,7 @@ function Viewpager() {
         if (isEdge(i)) {
           return { display: 'none' }
         } else {
-          return { x: newX(i), display: 'block', immediate: true }
+          return { x: newX(i), display: 'block', sc: 0.9, immediate: (n) => ['x', 'display'].includes(n) }
         }
       })
     } else if (!down && (Math.abs(xDelta) > centerX || velocity > 1)) {
@@ -59,7 +59,7 @@ function Viewpager() {
         if (isEdge(i)) {
           return { display: 'none' }
         } else {
-          return { x: newX(i), display: 'block', immediate: false }
+          return { x: newX(i), display: 'block', sc: 1, immediate: false }
         }
       })
     } else if (!down && (Math.abs(xDelta) <= centerX || velocity < 1)) {
@@ -67,7 +67,7 @@ function Viewpager() {
         if (isEdge(i)) {
           return { display: 'none' }
         } else {
-          return { x: newX(i), display: 'block', immediate: false }
+          return { x: newX(i), display: 'block', sc: 1, immediate: false }
         }
       })
     }
@@ -79,9 +79,9 @@ function Viewpager() {
       key={i}
       style={{
         display,
-        transform: x.interpolate((x) => `translate3d(${x}px,0,0)`)
+        transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
       }}>
-      <NavElement color={navElements[i].color} ind={navElements[i].ind} sc={sc} />
+      <NavElement color={navElements[i].color} ind={navElements[i].ind} scale={sc} />
     </animated.div>
   ))
 }
