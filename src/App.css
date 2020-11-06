@@ -7,9 +7,6 @@ body {
   overscroll-behavior-y: contain;
   margin: 0;
   padding: 0;
-  user-select: none;
-  /* position: fixed; */
-  /* overflow: hidden; */
 }
 
 /* .button1 {

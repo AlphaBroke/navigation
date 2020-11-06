@@ -72,20 +72,31 @@ function Viewpager() {
     }
   })
 
-  return props.map(({ x, display, sc }, i) => (
-    <animated.div
-      {...bind()}
-      key={i}
+  return (
+    <div
       style={{
-        position: 'absolute',
-        width: '100vw',
-        height: '100vh',
-        display,
-        transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
+        height: '100%',
+        width: '100%',
+        userSelect: 'none',
+        position: 'fixed',
+        overflow: 'hidden'
       }}>
-      <NavElement color={navElements[i].color} ind={navElements[i].ind} scale={sc} />
-    </animated.div>
-  ))
+      {props.map(({ x, display, sc }, i) => (
+        <animated.div
+          {...bind()}
+          key={i}
+          style={{
+            position: 'absolute',
+            width: '100vw',
+            height: '100vh',
+            display,
+            transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
+          }}>
+          <NavElement color={navElements[i].color} ind={navElements[i].ind} scale={sc} />
+        </animated.div>
+      ))}
+    </div>
+  )
 }
 
 render(<Viewpager />, document.getElementById('root'))
