@@ -101,7 +101,7 @@ function Viewpager() {
 
   function Forward() {
     if (index.current > 0) {
-      index.current = index.current - 1
+      index.current = index.current + 1
       set((i) => {
         console.log((i - index.current) * window.innerWidth)
         return {
