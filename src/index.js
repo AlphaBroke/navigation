@@ -41,6 +41,10 @@ function Viewpager() {
   const [props, set] = useSprings(navElements.length, (i) => ({ x: i * window.innerWidth, sc: 1, display: 'block' }))
 
   const bind = useGesture(({ down, delta: [xDelta], velocity }) => {
+    ani(down, xDelta, velocity)
+  })
+
+  function ani(down, xDelta, velocity) {
     const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
     const isEdge = (i) => i < index.current - 1 || i > index.current + 1
     const centerX = window.innerWidth / 2
@@ -75,50 +79,14 @@ function Viewpager() {
         }
       })
     }
-  })
+  }
 
   function Back() {
-    if (index.current > 0) {
-      index.current = index.current - 1
-      set((i) => {
-        console.log((i - index.current) * window.innerWidth)
-        return {
-          x: (i - index.current) * window.innerWidth,
-          sc: 0.8,
-          display: 'block'
-        }
-      })
-      setTimeout(
-        () =>
-          set(() => ({
-            sc: 1
-          })),
-        50
-      )
-    }
-    console.log(index.current)
+    ani(false, 1, 1.01)
   }
 
   function Forward() {
-    if (index.current > 0) {
-      index.current = index.current + 1
-      set((i) => {
-        console.log((i - index.current) * window.innerWidth)
-        return {
-          x: (i - index.current) * window.innerWidth,
-          sc: 0.8,
-          display: 'block'
-        }
-      })
-      setTimeout(
-        () =>
-          set(() => ({
-            sc: 1
-          })),
-        50
-      )
-    }
-    console.log(index.current)
+    ani(false, -1, 1.01)
   }
 
   return (
