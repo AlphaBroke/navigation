@@ -14,8 +14,9 @@ body {
   left: 10%;
   top: 90%;
   z-index: 10;
-  height: 5%;
-  width: 15%;
+  height: 6%;
+  width: 18%;
+  border: none;
 }
 
 .button2 {
@@ -23,8 +24,9 @@ body {
   right: 10%;
   top: 90%;
   z-index: 10;
-  height: 5%;
-  width: 15%;
+  height: 6%;
+  width: 18%;
+  border: none;
 }
 
 .nav-element-content {

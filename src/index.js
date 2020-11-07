@@ -1,5 +1,5 @@
 import { render } from 'react-dom'
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import clamp from 'lodash-es/clamp'
 import { useSprings, animated } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
@@ -32,7 +32,7 @@ const navElements = [
     color: 'yellow'
   }
 ]
-// let = local var but reset on render boese
+// let = local var but reset on render (bad)
 // useState = local state triggers rerender, constant over component lifetime
 // useRef = local var dont trigger rerender, constant over component lifetime
 
