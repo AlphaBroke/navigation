@@ -60,7 +60,7 @@ function Viewpager() {
         if (isEdge(i)) {
           return { display: 'none' }
         } else {
-          return { x: newX(i), display: 'block', sc: 0.9, immediate: (n) => ['display'].includes(n) }
+          return { x: newX(i), display: 'block', sc: 0.9, immediate: (n) => ['x', 'display'].includes(n) }
         }
       })
     } else if (!down && (Math.abs(xDelta) > centerX || velocity > 1)) {
