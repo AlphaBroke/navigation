@@ -38,7 +38,12 @@ const navElements = [
 
 function Viewpager() {
   const index = useRef(0)
-  const [props, set] = useSprings(navElements.length, (i) => ({ x: i * window.innerWidth, sc: 1, display: 'block' }))
+  const [props, set] = useSprings(navElements.length, (i) => ({
+    x: i * window.innerWidth,
+    sc: 1,
+    display: 'block'
+    // config: { friction: 100 }
+  }))
 
   const bind = useGesture(({ down, delta: [xDelta], velocity }) => {
     animatePageTransition(down, xDelta, velocity)
@@ -46,7 +51,7 @@ function Viewpager() {
 
   function animatePageTransition(down, xDelta, velocity) {
     const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
-    const isEdge = (i) => i < index.current - 1 || i > index.current + 1
+    const isEdge = (i) => i < 1 || i >= navElements.length
     const centerX = window.innerWidth / 2
     const lastIndex = navElements.length - 1
 
