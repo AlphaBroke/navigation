@@ -51,7 +51,7 @@ function Viewpager() {
 
   function animatePageTransition(down, xDelta, velocity) {
     const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
-    const isEdge = (i) => i < 1 || i >= navElements.length
+    const isEdge = (i) => i < 0 || i >= navElements.length
     const centerX = window.innerWidth / 2
     const lastIndex = navElements.length - 1
 
