@@ -11,21 +11,49 @@ body {
 
 .button1 {
   position: fixed;
-  left: 10%;
+  right: 80%;
   top: 90%;
   z-index: 10;
-  height: 6%;
-  width: 18%;
+  height: 5%;
+  width: 15%;
   border: none;
 }
 
 .button2 {
   position: fixed;
-  right: 10%;
+  right: 61.25%;
   top: 90%;
   z-index: 10;
-  height: 6%;
-  width: 18%;
+  height: 5%;
+  width: 15%;
+  border: none;
+}
+
+.button3 {
+  position: fixed;
+  right: 42.5%;
+  top: 90%;
+  z-index: 10;
+  height: 5%;
+  width: 15%;
+  border: none;
+}
+.button4 {
+  position: fixed;
+  right: 23.75%;
+  top: 90%;
+  z-index: 10;
+  height: 5%;
+  width: 15%;
+  border: none;
+}
+.button5 {
+  position: fixed;
+  right: 5%;
+  top: 90%;
+  z-index: 10;
+  height: 5%;
+  width: 15%;
   border: none;
 }
 
