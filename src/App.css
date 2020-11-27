@@ -4,6 +4,7 @@
 
 html,
 body {
+  overflow: hidden;
   overscroll-behavior-y: contain;
   margin: 0;
   padding: 0;
@@ -38,6 +39,7 @@ body {
   width: 15%;
   border: none;
 }
+
 .button4 {
   position: fixed;
   right: 23.75%;
@@ -47,6 +49,7 @@ body {
   width: 15%;
   border: none;
 }
+
 .button5 {
   position: fixed;
   right: 5%;
@@ -57,7 +60,18 @@ body {
   border: none;
 }
 
+.button6 {
+  position: fixed;
+  right: 80%;
+  top: 5%;
+  z-index: 10;
+  height: 5%;
+  width: 15%;
+  border: none;
+}
+
 .nav-element-content {
-  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3); */
   font-size: 50px;
+  width: 100%;
 }

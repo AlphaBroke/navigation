@@ -1,96 +1,102 @@
 import { render } from 'react-dom'
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Navigation from './Navigation'
 import * as R from 'ramda'
-import clamp from 'lodash-es/clamp'
-import { useSprings, animated } from 'react-spring'
-import { useGesture } from 'react-use-gesture'
 import './App.css'
 
+const List1 = () => (
+  <>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
+  </>
+)
+
 const navElements = [
-  <div style={{ backgroundColor: 'red', height: '100%' }}>1</div>,
-  <div style={{ backgroundColor: 'blue', height: '100%' }}>2</div>,
-  <div style={{ backgroundColor: 'green', height: '100%' }}>3</div>,
-  <div style={{ backgroundColor: 'turquoise', height: '100%' }}>4</div>,
-  <div style={{ backgroundColor: 'powderblue', height: '100%' }}>5</div>
+  {
+    key: 1,
+    element: (
+      <div style={{ height: '100%' }}>
+        <List1 />
+      </div>
+    ) //backgroundColor: 'red',
+  },
+  {
+    key: 2,
+    element: (
+      <div style={{ height: '100%' }}>
+        2
+        <List1 />
+      </div>
+    ) //backgroundColor: 'blue',
+  },
+  {
+    key: 3,
+    element: (
+      <div style={{ height: '100%' }}>
+        3
+        <List1 />
+      </div>
+    ) //backgroundColor: 'green',
+  },
+  {
+    key: 4,
+    element: (
+      <div style={{ height: '100%' }}>
+        4
+        <List1 />
+      </div>
+    ) //backgroundColor: 'turquoise',
+  },
+  {
+    key: 5,
+    element: (
+      <div style={{ height: '100%' }}>
+        5
+        <List1 />
+      </div>
+    ) //backgroundColor: 'powderblue',
+  }
 ]
 
 function App() {
-  const [stack, setStack] = useState([navElements[0]])
-  const [ind, setInd] = useState(1)
+  const [stack, setStack] = useState([{}])
 
-  const index = useRef(0)
-  const [props, set] = useSprings(navElements.length, (i) => ({
-    x: i * window.innerWidth,
-    sc: 1,
-    display: 'block'
-    // config: { friction: 100 }
-  }))
-
-  function animatePageTransition(down, xDelta, velocity) {
-    const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
-    const isEdge = (i) => i < 0 || i >= navElements.length
-    const centerX = window.innerWidth / 2
-    const lastIndex = navElements.length - 1
-
-    if (down) {
-      // runs a million times on down:
-      // stack.length < navElements.length && setStack(R.append(navElements[stack.length], stack))
-
-      set((i) => {
-        if (isEdge(i)) {
-          return { display: 'none' }
-        } else {
-          return { x: newX(i), display: 'block', sc: 0.9, immediate: (n) => ['x', 'display'].includes(n) }
-        }
-      })
-    } else if (!down && (Math.abs(xDelta) > centerX || velocity > 1)) {
-      index.current = clamp(index.current + (xDelta > 0 ? -1 : 1), 0, lastIndex)
-      // console.log(index.current)
-      set((i) => {
-        // console.log((i - index.current) * window.innerWidth)
-
-        if (isEdge(i)) {
-          return { display: 'none' }
-        } else {
-          return { x: newX(i), display: 'block', sc: 1, immediate: false }
-        }
-      })
-    } else if (!down && (Math.abs(xDelta) <= centerX || velocity < 1)) {
-      set((i) => {
-        if (isEdge(i)) {
-          return { display: 'none' }
-        } else {
-          return { x: newX(i), display: 'block', sc: 1, immediate: false }
-        }
-      })
-    }
-  }
-
-  function pushElement() {
-    ind < navElements.length && setInd(ind + 1)
-    stack.length < navElements.length && setStack(R.append(navElements[stack.length], stack))
-    animatePageTransition(false, -1, 1.01)
+  function pushElement({ target: { value } }) {
+    setStack(R.append(navElements[value]))
   }
 
   function dropElement() {
-    ind > 1 && setInd(ind - 1) // rework if gesture triggers R.append on down & velocity -1
-    // (old: (ind < stack.length) & (stack.length > 2))
-    ;(ind < stack.length) & (stack.length > 2) && setStack(R.dropLast(1, stack))
-    animatePageTransition(false, 1, 1.01)
+    stack.length > 1 && setStack(R.dropLast(1))
   }
-
-  console.log('ind', ind)
-  console.log('stack.length', stack.length)
 
   return (
     <>
-      <Navigation navElements={stack} animatePageTransition={animatePageTransition} props={props} />
-      <button onClick={dropElement} className="button1">
-        III
+      <Navigation navElements={stack} setStack={setStack} />
+
+      <button onClick={(e) => pushElement(e)} className="button1" value={0}>
+        1
       </button>
-      <button onClick={pushElement} className="button2">
-        III
+      <button onClick={(e) => pushElement(e)} className="button2" value={1}>
+        2
+      </button>
+      <button onClick={(e) => pushElement(e)} className="button3" value={2}>
+        3
+      </button>
+      <button onClick={(e) => pushElement(e)} className="button4" value={3}>
+        4
+      </button>
+      <button onClick={(e) => pushElement(e)} className="button5" value={4}>
+        5
+      </button>
+      <button onClick={dropElement} className="button6">
+        Back
       </button>
     </>
   )

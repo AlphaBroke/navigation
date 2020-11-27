@@ -1,81 +1,87 @@
 import React, { useRef, useEffect } from 'react'
 import clamp from 'lodash-es/clamp'
-import { useSprings, animated, useTransition } from 'react-spring'
+import { useSprings, animated } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 import './App.css'
+import * as R from 'ramda'
 
-// let = local var but reset on render (bad)
-// useState = local state triggers rerender, constant over component lifetime
-// useRef = local var dont trigger rerender, constant over component lifetime
+function Navigation({ navElements, setStack }) {
+  const index = useRef(0)
+  const [props, set] = useSprings(navElements.length, (i) => ({
+    x: (i - index.current) * window.innerWidth,
+    sc: 1,
+    display: 'block',
+    onRest: () => {}
+    // config: { friction: 1000 }
+  }))
 
-function Navigation({ navElements, animatePageTransition, props }) {
-  // const index = useRef(0)
-  // const [props, set] = useSprings(navElements.length, (i) => ({
-  //   x: i * window.innerWidth,
-  //   sc: 1,
-  //   display: 'block'
-  //   // config: { friction: 100 }
-  // }))
+  console.log(props)
 
-  // const stackAnimation = useTransition(navElements, (item) => item.key, {
-  //   from: {
-  //     position: 'fixed',
-  //     transform: `translate3d(-100%, 0, 0)`
-  //   },
-  //   enter: {
-  //     position: 'fixed',
-  //     transform: `translate3d(0%, 0, 0)`
-  //   },
-  //   leave: {
-  //     position: 'fixed',
-  //     transform: `translate3d(100%, 0, 0)`
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   animatePageTransition(false, -1, 1.01)
-  // }, [navElements])
+  useEffect(() => {
+    animatePageTransition(false, -1, 1.01)
+    console.log('effect fired')
+  }, [navElements])
 
   const bind = useGesture(({ down, delta: [xDelta], velocity }) => {
     animatePageTransition(down, xDelta, velocity)
   })
 
-  // function animatePageTransition(down, xDelta, velocity) {
-  //   const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
-  //   // const isEdge = (i) => i < 0 || i >= navElements.length
-  //   const centerX = window.innerWidth / 2
-  //   const lastIndex = navElements.length - 1
+  function animatePageTransition(down, xDelta, velocity) {
+    const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
+    const centerX = window.innerWidth / 2
+    const lastIndex = navElements.length - 1
 
-  //   if (down) {
-  //     set((i) => {
-  //       // if (isEdge(i)) {
-  //       //   return { display: 'none' }
-  //       // } else {
-  //       return { x: newX(i), display: 'block', sc: 0.9, immediate: (n) => ['x', 'display'].includes(n) }
-  //       // }
-  //     })
-  //   } else if (!down && (Math.abs(xDelta) > centerX || velocity > 1)) {
-  //     index.current = clamp(index.current + (xDelta > 0 ? -1 : 1), 0, lastIndex)
-
-  //     set((i) => {
-  //       console.log(i - index.current)
-
-  //       // if (isEdge(i)) {
-  //       //   return { display: 'none' }
-  //       // } else {
-  //       return { x: newX(i), display: 'block', sc: 1, immediate: false }
-  //       // }
-  //     })
-  //   } else if (!down && (Math.abs(xDelta) <= centerX || velocity < 1)) {
-  //     set((i) => {
-  //       // if (isEdge(i)) {
-  //       //   return { display: 'none' }
-  //       // } else {
-  //       return { x: newX(i), display: 'block', sc: 1, immediate: false }
-  //       // }
-  //     })
-  //   }
-  // }
+    if (down) {
+      set((i) => {
+        return {
+          x: newX(i),
+          display: 'block',
+          sc: 0.9,
+          immediate: (n) => ['x', 'display'].includes(n),
+          onRest: () => {}
+        }
+      })
+    } else if (!down && xDelta < 0 && (Math.abs(xDelta) > centerX || velocity > 1)) {
+      index.current = clamp(index.current + 1, 0, lastIndex)
+      set((i) => {
+        return {
+          x: newX(i),
+          display: 'block',
+          sc: 1,
+          immediate: false,
+          onRest: () => {}
+        }
+      })
+    } else if (!down && xDelta > 0 && (Math.abs(xDelta) > centerX || velocity > 1)) {
+      // setStack(R.dropLast(1))
+      index.current = clamp(index.current - 1, 0, lastIndex)
+      set((i) => {
+        console.log('SET SPRING')
+        return {
+          x: newX(i),
+          display: 'block',
+          sc: 1,
+          immediate: false,
+          onRest: () => {
+            if (!down && index.current === i) {
+              console.log('REST')
+              setStack(R.dropLast(navElements.length - (index.current + 1)))
+            }
+          }
+        }
+      })
+    } else if (!down && (Math.abs(xDelta) <= centerX || velocity < 1)) {
+      set((i) => {
+        return {
+          x: newX(i),
+          display: 'block',
+          sc: 1,
+          immediate: false,
+          onRest: () => {}
+        }
+      })
+    }
+  }
 
   return (
     <div
@@ -115,7 +121,7 @@ function Navigation({ navElements, animatePageTransition, props }) {
               }}>
               {/* ---USER CONTENT--- */}
 
-              {navElements[i]}
+              {navElements[i].element}
 
               {/* ---USER CONTENT--- */}
             </animated.div>
