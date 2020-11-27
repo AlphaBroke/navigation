@@ -10,8 +10,8 @@ function Navigation({ navElements, setStack }) {
   const [props, set] = useSprings(navElements.length, (i) => ({
     x: (i - index.current) * window.innerWidth,
     sc: 1,
-    display: 'block',
-    onRest: () => {}
+    display: 'block'
+    // onRest: () => {}
     // config: { friction: 1000 }
   }))
 
@@ -48,8 +48,8 @@ function Navigation({ navElements, setStack }) {
           x: newX(i),
           display: 'block',
           sc: 1,
-          immediate: false,
-          onRest: () => {}
+          immediate: false
+          // onRest: () => {}
         }
       })
     } else if (!down && xDelta > 0 && (Math.abs(xDelta) > centerX || velocity > 1)) {
@@ -77,7 +77,12 @@ function Navigation({ navElements, setStack }) {
           display: 'block',
           sc: 1,
           immediate: false,
-          onRest: () => {}
+          onRest: () => {
+            if (!down && index.current === i) {
+              console.log('REST')
+              setStack(R.dropLast(navElements.length - (index.current + 1)))
+            }
+          }
         }
       })
     }
