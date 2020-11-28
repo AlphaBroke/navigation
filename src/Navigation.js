@@ -7,6 +7,7 @@ import * as R from 'ramda'
 
 function Navigation({ navElements, setStack }) {
   const index = useRef(0)
+  const renderElements = useRef(navElements)
   const [props, set] = useSprings(navElements.length, (i) => ({
     x: (i - index.current) * window.innerWidth,
     sc: 1,
@@ -15,11 +16,11 @@ function Navigation({ navElements, setStack }) {
     // config: { friction: 1000 }
   }))
 
-  console.log(props)
+  console.log(navElements)
 
   useEffect(() => {
     animatePageTransition(false, -1, 1.01)
-    console.log('effect fired')
+    // renderElements.current = navElements
   }, [navElements])
 
   const bind = useGesture(({ down, delta: [xDelta], velocity }) => {
@@ -56,14 +57,13 @@ function Navigation({ navElements, setStack }) {
       // setStack(R.dropLast(1))
       index.current = clamp(index.current - 1, 0, lastIndex)
       set((i) => {
-        console.log('SET SPRING')
         return {
           x: newX(i),
           display: 'block',
           sc: 1,
           immediate: false,
           onRest: () => {
-            if (!down && index.current === i) {
+            if (navElements.length > 1 && !down && index.current === i) {
               console.log('REST')
               setStack(R.dropLast(navElements.length - (index.current + 1)))
             }
@@ -77,12 +77,12 @@ function Navigation({ navElements, setStack }) {
           display: 'block',
           sc: 1,
           immediate: false,
-          onRest: () => {
-            if (!down && index.current === i) {
-              console.log('REST')
-              setStack(R.dropLast(navElements.length - (index.current + 1)))
-            }
-          }
+          onRest: () => {}
+          // if (!down && index.current === i) {
+          // console.log('REST')
+          // setStack(R.dropLast(navElements.length - (index.current + 1)))
+          //  }
+          //   }
         }
       })
     }
