@@ -71,7 +71,7 @@ body {
 }
 
 .nav-element-content {
-  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3); */
   font-size: 50px;
   width: 100%;
 }
