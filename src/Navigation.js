@@ -1,13 +1,13 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import clamp from 'lodash-es/clamp'
 import { useSprings, animated } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 import './App.css'
 import * as R from 'ramda'
 
-function Navigation({ navElements, setStack }) {
+function Navigation({ navElements, setStack, dropTrigger }) {
+  // const [topEl, setTopEl] = useState(R.last(navElements))
   const index = useRef(0)
-  const renderElements = useRef(navElements)
   const [props, set] = useSprings(navElements.length, (i) => ({
     x: (i - index.current) * window.innerWidth,
     sc: 1,
@@ -16,12 +16,15 @@ function Navigation({ navElements, setStack }) {
     // config: { friction: 1000 }
   }))
 
-  console.log(navElements)
-
   useEffect(() => {
     animatePageTransition(false, -1, 1.01)
-    // renderElements.current = navElements
+    console.log('push fired')
   }, [navElements])
+
+  useEffect(() => {
+    animatePageTransition(false, 1, 1.01)
+    console.log('drop fired')
+  }, [dropTrigger])
 
   const bind = useGesture(({ down, delta: [xDelta], velocity }) => {
     animatePageTransition(down, xDelta, velocity)

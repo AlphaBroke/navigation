@@ -68,18 +68,20 @@ const navElements = [
 
 function App() {
   const [stack, setStack] = useState([{}])
+  const [dropTrigger, setDropTrigger] = useState(0)
 
   function pushElement({ target: { value } }) {
     setStack(R.append(navElements[value]))
   }
 
   function dropElement() {
-    stack.length > 1 && setStack(R.dropLast(1))
+    setDropTrigger(dropTrigger + 1)
+    // setStack(R.append('drop'))
   }
 
   return (
     <>
-      <Navigation navElements={stack} setStack={setStack} />
+      <Navigation navElements={stack} setStack={setStack} dropTrigger={dropTrigger} />
 
       <button onClick={(e) => pushElement(e)} className="button1" value={0}>
         1
