@@ -5,10 +5,9 @@ import { useGesture } from 'react-use-gesture'
 import './App.css'
 import * as R from 'ramda'
 
-function Navigation({ navElements, setStack, dropTrigger }) {
-  // const [topEl, setTopEl] = useState(R.last(navElements))
+function Navigation({ stack, setStack, dropTrigger }) {
   const index = useRef(0)
-  const [props, set] = useSprings(navElements.length, (i) => ({
+  const [props, set] = useSprings(stack.length, (i) => ({
     x: (i - index.current) * window.innerWidth,
     sc: 1,
     display: 'block'
@@ -19,7 +18,7 @@ function Navigation({ navElements, setStack, dropTrigger }) {
   useEffect(() => {
     animatePageTransition(false, -1, 1.01)
     console.log('push fired')
-  }, [navElements])
+  }, [stack])
 
   useEffect(() => {
     animatePageTransition(false, 1, 1.01)
@@ -33,7 +32,7 @@ function Navigation({ navElements, setStack, dropTrigger }) {
   function animatePageTransition(down, xDelta, velocity) {
     const newX = (i) => (i - index.current) * window.innerWidth + (down ? xDelta : 0)
     const centerX = window.innerWidth / 2
-    const lastIndex = navElements.length - 1
+    const lastIndex = stack.length - 1
 
     if (down) {
       set((i) => {
@@ -57,7 +56,6 @@ function Navigation({ navElements, setStack, dropTrigger }) {
         }
       })
     } else if (!down && xDelta > 0 && (Math.abs(xDelta) > centerX || velocity > 1)) {
-      // setStack(R.dropLast(1))
       index.current = clamp(index.current - 1, 0, lastIndex)
       set((i) => {
         return {
@@ -66,9 +64,9 @@ function Navigation({ navElements, setStack, dropTrigger }) {
           sc: 1,
           immediate: false,
           onRest: () => {
-            if (navElements.length > 1 && !down && index.current === i) {
+            if (stack.length > 1 && !down && index.current === i) {
               console.log('REST')
-              setStack(R.dropLast(navElements.length - (index.current + 1)))
+              setStack(R.dropLast(stack.length - (index.current + 1)))
             }
           }
         }
@@ -81,11 +79,6 @@ function Navigation({ navElements, setStack, dropTrigger }) {
           sc: 1,
           immediate: false,
           onRest: () => {}
-          // if (!down && index.current === i) {
-          // console.log('REST')
-          // setStack(R.dropLast(navElements.length - (index.current + 1)))
-          //  }
-          //   }
         }
       })
     }
@@ -100,42 +93,45 @@ function Navigation({ navElements, setStack, dropTrigger }) {
         position: 'fixed',
         overflow: 'hidden'
       }}>
-      {props.map(({ x, display, sc }, i) => (
-        <animated.div
-          {...bind()}
-          key={i}
-          style={{
-            position: 'absolute',
-            width: '100vw',
-            height: '100vh',
-            display,
-            transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
-          }}>
-          <div
-            className="nav-element"
+      {props.map(({ x, display, sc }, i) => {
+        const NavElement = stack[i].element
+        return (
+          <animated.div
+            {...bind()}
+            key={i}
             style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'stretch',
-              boxSizing: 'border-box'
+              position: 'absolute',
+              width: '100vw',
+              height: '100vh',
+              display,
+              transform: x.interpolate((x1) => `translate3d(${x1}px,0,0)`)
             }}>
-            <animated.div
-              className="nav-element-content"
+            <div
+              className="nav-element"
               style={{
-                flex: 1,
-                transform: sc.interpolate((sc) => `scale(${sc})`)
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'stretch',
+                boxSizing: 'border-box'
               }}>
-              {/* ---USER CONTENT--- */}
+              <animated.div
+                className="nav-element-content"
+                style={{
+                  flex: 1,
+                  transform: sc.interpolate((sc) => `scale(${sc})`)
+                }}>
+                {/* ---USER CONTENT--- */}
 
-              {navElements[i].element}
+                <NavElement />
 
-              {/* ---USER CONTENT--- */}
-            </animated.div>
-          </div>
-        </animated.div>
-      ))}
+                {/* ---USER CONTENT--- */}
+              </animated.div>
+            </div>
+          </animated.div>
+        )
+      })}
     </div>
   )
 }

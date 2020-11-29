@@ -3,71 +3,33 @@ import React, { useState } from 'react'
 import Navigation from './Navigation'
 import * as R from 'ramda'
 import './App.css'
-
-const List1 = () => (
-  <>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-    <div style={{ borderBottom: '1px solid #ddd', fontSize: 16, width: '100%', height: 70 }}>Hallo</div>
-  </>
-)
+import Page from './Page'
 
 const navElements = [
   {
     key: 1,
-    element: (
-      <div style={{ height: '100%' }}>
-        1
-        <List1 />
-      </div>
-    ) //backgroundColor: 'red',
+    element: Page
   },
   {
     key: 2,
-    element: (
-      <div style={{ height: '100%' }}>
-        2
-        <List1 />
-      </div>
-    ) //backgroundColor: 'blue',
+    element: Page
   },
   {
     key: 3,
-    element: (
-      <div style={{ height: '100%' }}>
-        3
-        <List1 />
-      </div>
-    ) //backgroundColor: 'green',
+    element: Page
   },
   {
     key: 4,
-    element: (
-      <div style={{ height: '100%' }}>
-        4
-        <List1 />
-      </div>
-    ) //backgroundColor: 'turquoise',
+    element: Page
   },
   {
     key: 5,
-    element: (
-      <div style={{ height: '100%' }}>
-        5
-        <List1 />
-      </div>
-    ) //backgroundColor: 'powderblue',
+    element: Page
   }
 ]
 
 function App() {
-  const [stack, setStack] = useState([{}])
+  const [stack, setStack] = useState([navElements[0]])
   const [dropTrigger, setDropTrigger] = useState(0)
 
   function pushElement({ target: { value } }) {
@@ -76,12 +38,11 @@ function App() {
 
   function dropElement() {
     setDropTrigger(dropTrigger + 1)
-    // setStack(R.append('drop'))
   }
 
   return (
     <>
-      <Navigation navElements={stack} setStack={setStack} dropTrigger={dropTrigger} />
+      <Navigation stack={stack} setStack={setStack} dropTrigger={dropTrigger} />
 
       <button onClick={(e) => pushElement(e)} className="button1" value={0}>
         1

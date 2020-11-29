@@ -63,7 +63,7 @@ body {
 .button6 {
   position: fixed;
   right: 80%;
-  top: 5%;
+  top: 2.5%;
   z-index: 10;
   height: 5%;
   width: 15%;
@@ -74,4 +74,13 @@ body {
   /* box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.3); */
   font-size: 50px;
   width: 100%;
+}
+
+.list-buttons {
+  z-index: 20;
+  position: fixed;
+  right: 5%;
+  top: 2.5%;
+  height: 5%;
+  width: 15%;
 }
