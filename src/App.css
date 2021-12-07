@@ -84,3 +84,8 @@ body {
   height: 5%;
   width: 15%;
 }
+
+.rec {
+  padding-top: 20%;
+  overflow: scroll;
+}

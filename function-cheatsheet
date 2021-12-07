@@ -1,0 +1,14 @@
+function fn(arg1, arg2) { } 
+const fn = (arg1, arg2) => { }
+const a = fn(1,2) // return of fn with 1,2
+const a = fn // uncalled function
+a(1,2)
+
+function MyComp(props) {}
+const MyComp = (props) => { }
+const a = MyComp({ prop1: 1, prop2: 2 }) // rendered component
+const a = <MyComp prop1="1" prop2="2" /> // rendered component
+const A = MyComp // unrendered component
+A({ prop1: 1, prop2: 2 })
+<A prop1="1" prop2="2" />
+

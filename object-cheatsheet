@@ -1,0 +1,9 @@
+const obj = { name: 'Hans', age: 18 }
+const ages = { Hans: 18, Peter: 40 }
+obj.name // Hans
+obj.age // 18
+obj['name'] // Hans (Computed Property)
+obj['age'] // 18 (Computed Property)
+const prop = 'name'
+const hansName = obj[prop] // Hans
+const hansAge = ages[hansName]
